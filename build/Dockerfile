@@ -4,7 +4,7 @@
 # Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7
 ################################################################################
 # Create a stage for building the application.
-ARG GO_VERSION=1.26-alpine3.23
+ARG GO_VERSION=1.26.3-alpine3.23
 FROM golang:${GO_VERSION} AS builder
 
 WORKDIR /workspace
@@ -34,7 +34,7 @@ RUN CGO_ENABLED=0 GOOS=${TARGETOS:-linux} GOARCH=${TARGETARCH} go build \
 
 # Use distroless as minimal base image to package the manager binary
 # Refer to https://github.com/GoogleContainerTools/distroless for more details
-FROM gcr.io/distroless/static:latest
+FROM gcr.io/distroless/static-debian13:latest
 
 LABEL maintainers="Kubernetes Authors"
 LABEL description="NFS subdir external provisioner"

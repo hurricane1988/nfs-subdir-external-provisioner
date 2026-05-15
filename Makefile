@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # Image URL to use all building/pushing image targets
-VERSION ?= v4.0.3
+VERSION ?= v4.0.3-rc01
 IMG ?= registry.k8s.io/sig-storage/nfs-subdir-external-provisioner
 
 # CONTAINER_TOOL defines the container tool to be used for building images.
@@ -64,6 +64,14 @@ fmt: ## Run go fmt against code.
 .PHONY: vet
 vet: ## Run go vet against code.
 	go vet ./...
+
+GOVULNCHECK = $(shell pwd)/bin/govulncheck
+.PHONY: govulncheck
+govulncheck: $(GOVULNCHECK) ## Run govulncheck against code.
+	- $(GOVULNCHECK) ./...
+
+$(GOVULNCHECK): $(LOCALBIN)
+	GOBIN=$(LOCALBIN) go install golang.org/x/vuln/cmd/govulncheck@latest
 
 ##@ Build
 
